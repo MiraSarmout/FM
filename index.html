@@ -3,12 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عن المتجر - Farmasi by Mira</title>
+  <title>Farmasi by Mira</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #a8326d;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    section {
+      padding: 20px;
+      display: none;
+    }
+    section.active {
+      display: block;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
     .back-to-home {
       display: inline-block;
-      margin-top: 30px;
+      margin-top: 20px;
       background-color: #a8326d;
       color: white;
       padding: 10px 20px;
@@ -23,17 +63,98 @@
 </head>
 <body>
   <header>
-    <h1>عن المتجر</h1>
+    <h1>Farmasi by Mira</h1>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('home')">الرئيسية</a></li>
+        <li><a href="#" onclick="showSection('about')">من نحن</a></li>
+        <li><a href="#" onclick="showSection('products')">المنتجات</a></li>
+        <li><a href="#" onclick="showSection('cart')">سلة المشتريات</a></li>
+        <li><a href="#" onclick="showSection('contact')">تواصل معنا</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <section>
+  <section id="home" class="active">
+    <h2>مرحباً بكم في Farmasi by Mira</h2>
+    <p>أفضل منتجات العناية والتجميل الطبية بأمان وجودة عالية.</p>
+  </section>
+
+  <section id="about">
     <h2>من نحن</h2>
-    <p>مرحباً بكم في متجر <strong>Farmasi by Mira</strong>، نوفر لكم أفضل منتجات العناية والتجميل الطبية بجودة عالية وموثوقة تناسب جميع أنواع البشرة وتراعي أعلى معايير السلامة.</p>
-    <a href="index.html" class="back-to-home">العودة إلى الصفحة الرئيسية</a>
+    <p>Farmasi by Mira متجر متخصص في بيع منتجات العناية والتجميل ذات جودة طبية موثوقة وآمنة لجميع أنواع البشرة.</p>
+  </section>
+
+  <section id="products">
+    <h2>منتجاتنا</h2>
+    <div class="product">
+      <h3>منتج 1</h3>
+      <p>وصف مختصر للمنتج</p>
+      <p>السعر: $20</p>
+      <button onclick="addToCart('منتج 1', 20)">أضف إلى السلة</button>
+    </div>
+    <div class="product">
+      <h3>منتج 2</h3>
+      <p>وصف مختصر لمنتج آخر</p>
+      <p>السعر: $35</p>
+      <button onclick="addToCart('منتج 2', 35)">أضف إلى السلة</button>
+    </div>
+  </section>
+
+  <section id="cart">
+    <h2>سلة المشتريات</h2>
+    <ul id="cart-items"></ul>
+    <p id="total-price">المجموع: $0</p>
+    <button onclick="checkout()">إتمام الشراء</button>
+  </section>
+
+  <section id="contact">
+    <h2>تواصل معنا</h2>
+    <p>للطلبات أو الاستفسارات يمكنكم التواصل على الرقم: <strong>71380757</strong></p>
   </section>
 
   <footer>
     <p>&copy; 2025 Farmasi by Mira</p>
   </footer>
+
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    let cart = [];
+
+    function addToCart(product, price) {
+      cart.push({ product, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const totalPrice = document.getElementById('total-price');
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.product} - $${item.price}`;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+      totalPrice.textContent = `المجموع: $${total}`;
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('سلة المشتريات فارغة!');
+        return;
+      }
+      alert('شكراً لطلبك!');
+      cart = [];
+      updateCart();
+    }
+  </script>
 </body>
 </html>
